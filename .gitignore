@@ -1,3 +1,4 @@
 LOG
 *.json
 github.png
+.gitignore
