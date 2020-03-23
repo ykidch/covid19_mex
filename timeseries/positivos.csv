@@ -1,33 +1,33 @@
-Estado,2020.03.16,2020.03.17,2020.03.18,2020.03.19,2020.03.20,2020.03.21
-Aguascalientes,1,1,1,4,4,4
-Baja California,0,0,2,2,4,8
-Baja California Sur,0,0,0,0,0,1
-Campeche,0,0,0,0,0,0
-Chiapas,1,1,1,2,2,2
-Chihuahua,0,1,1,1,2,2
-Coahuila,1,1,1,1,1,3
-Colima,0,0,1,1,1,2
-Ciudad de México,21,21,24,31,31,45
-Durango,3,3,3,3,4,5
-Guanajuato,0,1,4,4,4,4
-Guerrero,2,2,2,4,4,4
-Hidalgo,0,0,0,2,2,3
-Jalisco,2,5,6,22,28,32
-México,9,10,10,10,14,14
-Michoacán,0,0,0,0,0,0
-Morelos,0,0,0,0,2,2
-Nayarit,0,0,0,0,0,1
-Nuevo León,13,14,19,19,29,32
-Oaxaca,2,2,2,2,2,2
-Puebla,8,9,9,11,14,16
-Querétaro,7,7,7,9,11,14
-Quintana Roo,4,4,6,6,11,12
-San Luis Potosí,2,2,3,7,7,9
-Sinaloa,2,2,2,3,3,3
-Sonora,0,1,1,2,2,2
-Tabasco,0,0,1,1,2,4
-Tamaulipas,0,1,2,2,2,3
-Tlaxcala,0,0,0,0,0,0
-Veracruz,0,0,2,2,4,7
-Yucatán,4,5,8,13,13,14
-Zacatecas,0,0,0,0,0,1
+Estados,2020.03.16,2020.03.17,2020.03.18,2020.03.19,2020.03.20,2020.03.21,2020.03.22
+Aguascalientes,1,1,1,4,4,4,4
+Baja California,0,0,2,2,4,8,11
+Baja California Sur,0,0,0,0,0,1,1
+Campeche,0,0,0,0,0,0,1
+Chiapas,1,1,1,2,2,2,2
+Chihuahua,0,1,1,1,2,2,5
+Coahuila,1,1,1,1,1,3,10
+Colima,0,0,1,1,1,2,2
+Ciudad de México,21,21,24,31,31,45,56
+Durango,3,3,3,3,4,5,5
+Guanajuato,0,1,4,4,4,4,4
+Guerrero,2,2,2,4,4,4,4
+Hidalgo,0,0,0,2,2,3,5
+Jalisco,2,5,6,22,28,32,41
+México,9,10,10,10,14,14,22
+Michoacán,0,0,0,0,0,0,3
+Morelos,0,0,0,0,2,2,2
+Nayarit,0,0,0,0,0,1,1
+Nuevo León,13,14,19,19,29,32,35
+Oaxaca,2,2,2,2,2,2,3
+Puebla,8,9,9,11,14,16,16
+Querétaro,7,7,7,9,11,14,14
+Quintana Roo,4,4,6,6,11,12,12
+San Luis Potosí,2,2,3,7,7,9,12
+Sinaloa,2,2,2,3,3,3,4
+Sonora,0,1,1,2,2,2,4
+Tabasco,0,0,1,1,2,4,5
+Tamaulipas,0,1,2,2,2,3,4
+Tlaxcala,0,0,0,0,0,0,0
+Veracruz,0,0,2,2,4,7,7
+Yucatán,4,5,8,13,13,14,19
+Zacatecas,0,0,0,0,0,1,2
