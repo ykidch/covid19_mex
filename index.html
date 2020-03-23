@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Casos COVID-19 confirmados en México</title>
+<style>
+
+body {
+  overflow: scroll;
+  height: 100%;
+  width: 100%;
+  background-color: #030303;
+}
+
+#title_info {
+  color: #CCCCCC;
+  font-family:"Geneva",sans-serif;
+}
+
+#fuente_info {
+  color: #CCCCCC;
+  font-family:"Geneva",sans-serif;
+}
+
+
+
+#map {
+  border-radius: 15px;
+  background-color: #050814;
+  border: 1px solid #0066CC;
+
+}
+
+.municipalities {
+  fill: #222;
+}
+
+.municipalities :hover {
+  fill: #00f;
+}
+
+.state-boundary {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .50;
+  stroke-width: 1px;
+  pointer-events: none;
+}
+
+.municipality-boundary {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .50;
+  stroke-width: 1px;
+  pointer-events: none;
+}
+
+.country-boundary {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .50;
+  stroke-width: 1px;
+  pointer-events: none;
+}
+
+.total_table_table {
+  font-size: 12px;
+  font-family: "Roboto",sans-serif;
+}
+
+.total_table_table td {
+  padding:0px;
+}
+
+.total_table_table .table_estado {
+  width:120px;
+  color: #FFFFFF;
+  background-color: #101010;
+}
+.total_table_table .table_value {
+  width:30px;
+  font-weight:bold;
+  color: #FCE216;
+  background-color: #101010;
+}
+
+#info {
+  font-family: "Roboto",sans-serif;
+  color: #AAAAAA;
+}
+
+#graph {
+  border-radius: 15px;
+  background-color: #101010;
+  border: 1px solid #A9008B;
+}
+
+#graph .axis-label{
+  fill: #CCCCCC;
+  font-size: 12px;
+  font-family: "Roboto",sans-serif;
+}
+
+#graph .domain{
+  stroke: #AAAAAA;
+}
+
+#graph .tick line{
+  stroke: #AAAAAA;
+}
+#graph .tick text{
+  fill: #CCCCCC;
+}
+
+#graph .grid line{
+  stroke: #555555;
+}
+</style>
+<body>
+	<div id="parent" style="display:block;margin:auto;padding:0;position:relative;width:100%">
+	<div id="big_container" style="display:flex;width:1260px;padding:0;position:relative;margin:auto;flex-direction:column">
+		<div id="title_info"><span style="font-size:36px">Visualización casos <strong>confirmados</strong> acumulados de COVID-19 en México</span><br><span style="font-size:20px">actualizado hasta <span id="update_date"><span></div>
+	<div id="container" style="display:flex;width:1260px;padding:0;position:relative;margin:auto;padding-top:5px">
+		<div id="map" style="height:628px; width:800px;">
+		</div>
+		<div id="right_cont" style="display:grid; height:628px;grid-template-columns:100%;grid-template-rows:210px 108px 300px;row-gap:5px;margin-left:5px">
+			<div id="total_table" style="height:280px;display:grid;grid-template-rows:100%;grid-template-columns: 33% 33% 33%">
+				<div id="col_1"></div>
+				<div id="col_2"></div>
+				<div id="col_3"></div>
+			</div>
+
+			<div id="info" style="">
+				<div id="info_grid" style="display:grid; height:100%;width:100%;grid-template-rows:25% 25% 50%;grid-template-columns:100%">
+					<div id="info_row1" style="display:grid;grid-template-columns:50% 50%;font-size:20px;padding-top:5px">
+						<div style="padding-right:10px;text-align:right">Mostrando datos de: </div>
+						<div id="info_date" style="font-weight:bold;color:#92C6C9"></div>						
+					</div>
+					<div id="info_row2" style="display:grid;grid-template-columns:50% 50%;font-size:20px;padding-top:5px">
+						<div style="padding-right:10px;text-align:right">Total: </div>
+						<div> <span id="info_total" style="font-weight:bold;color:#EB471E"></span> confirmados</div>						
+					</div>
+					<div id="info_row3" style="display:grid;grid-template-columns:50% 50%;padding-bottom:3px;color:#FFFFFF">
+						<div style="font-size:20px;font-weight:bold;padding-left:10px;display:flex"><span id="info_state" style="align-self:flex-end"><span id="info_state_d3"></span></span></div>
+						<div id="info_cases" style="font-size:20px;display:flex"><span style="align-self:flex-end"><span id="info_num" style="font-weight:bold;color:#FFC500;font-size:24px"><span id="info_num_d3"></span></span><span id="info_conf"></span id="info_conf_d3"></span></span></span></div>
+					</div>
+				</div>
+			</div>
+			<div id="graph" style="height:300px; display:flex; align-items: center;justify-content: center;width:460px"></div>
+		</div>
+
+
+		</div>
+		<div id="fuente_info"><span style="font-size:12px;"><p>Fuente: Secretaría de Salud/Dirección General de Epidemiología (<a href="https://www.gob.mx/salud/documentos/coronavirus-covid-19-comunicado-tecnico-diario-238449">https://www.gob.mx/salud/documentos/coronavirus-covid-19-comunicado-tecnico-diario-238449</a>)<br>Contacto: ykidch@hotmail.com</span></p></div>
+		<div style="text-align:center"><a href="https://github.com/ykidch/covid19_mex"><img src="github.png"></a><div>
+	</div>
+	</div>
+	</div>
+
+</body>
+
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale.v3.min.js"></script>
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+
+var dates
+
+d3.csv("timeseries/positivos.csv", function(data){
+// Load GeoJSON data and merge with states data
+		d3.json("mx_tj.json",function(mx_tj) {
+			
+			for(var i=0;i<data.length;i++) {
+				var dataState = data[i].Estado;
+
+				var features = topojson.feature(mx_tj, mx_tj.objects.states).features;
+				for(var j=0;j<features.length;j++) {
+					var jsonState = features[j].properties.state_name;
+					if (dataState === jsonState) {
+						
+						var dates = Object.keys(data[i]);
+						for(var k=1;k<dates.length;k++) {
+							//start in 1 to skip Estado column
+							mx_tj.objects.states.geometries[j].properties[k] = data[i][k];
+							break;
+						}
+					}
+				}
+			}	
+	})
+})
+
+//dates = dates.slice(1,dates.length); //array of dates, get rid of Estado column
+
+var width = 800,
+    height = 628;
+    scale0 = 2*width;
+
+var projection = d3.geo.conicConformal()
+    .rotate([102, 0])
+    .center([0, 24])
+    .parallels([17.5, 29.5])
+//    .scale(1850)
+//    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+
+var zoom = d3.behavior.zoom()
+   .translate([width / 2, height / 2])
+    .scale(scale0)
+    .scaleExtent([scale0, 8 * scale0])
+    .on("zoom", zoomed);
+
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg
+    .call(zoom)
+    .call(zoom.event);
+
+var max_no = 0; //max no infectados en un estado
+var master_date; //ultimo dia 
+var all_data;
+var total_cases = 0; //#total confirmados
+
+var margin = {top: 10, right: 30, bottom: 60, left: 50},
+    graph_width =  450 - margin.left - margin.right,
+    graph_height = 280 - margin.top - margin.bottom;
+
+var graph = d3.select("#graph")
+	.append("svg")
+	  .attr("id","state_graph")
+	  .attr("width",graph_width+margin.left+margin.right)
+	  .attr("height",graph_height + margin.top + margin.bottom)
+	.append("g")
+	  .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+//definir mapa de colores
+var colorArray = ["#333333"]
+var no_colors = 8;
+//var color_range_min = 0.1; //colorscale dependent i.e. inferno
+//var color_range_max = 0.7;
+var color_range_min = 0.3;
+var color_range_max = 1;
+for (var i=1;i<no_colors;i++){
+  var colorscale_num = color_range_min + (i-1)*(color_range_max-color_range_min)/(no_colors-2);
+  colorArray[i] = d3.interpolateYlOrRd(colorscale_num);
+}
+var colorScale = d3.scaleThreshold()
+  .domain([1,5,10,25,50,100,500])
+  .range(colorArray);
+
+
+d3.csv("timeseries/positivos.csv", function(csv_data){
+
+	all_data = csv_data;
+
+	for (var i=0;i<32;i++){
+	  var state_data_temp = csv_data[i];
+	  var state_dates_temp = Object.keys(state_data_temp);
+	  state_dates_temp = state_dates_temp.slice(1,state_dates_temp.length);	
+		
+	  master_date = state_dates_temp[state_dates_temp.length-1]
+		
+	  total_cases += parseInt(state_data_temp[master_date])
+			
+	  for (var j=0;j<state_dates_temp.length;j++){
+	    if (parseInt(state_data_temp[state_dates_temp[j]]) > max_no){
+	      max_no = parseInt(state_data_temp[state_dates_temp[j]]);
+	    }
+	  }   
+	}
+
+	//mostrar la fecha
+	var parseTime = d3.timeParse("%Y.%m.%d");
+	var master_date_temp = parseTime(master_date);
+	var time_format = d3.timeFormat("%d-%m-%Y");
+	var master_date_disp = time_format(master_date_temp)
+	d3.select("#update_date")
+	    .text(master_date_disp)
+
+	d3.select("#info_date")
+	  .append("span")
+	    .attr("id","info_date_d3")
+	    .text(master_date_disp)
+
+	//mostrar el total
+	d3.select("#info_total")
+	  .text(total_cases)
+
+	//hacer la tabla
+	var table_keys = ["Estado",master_date];
+	var total_table = d3.select("#col_1").append("table")
+					.attr("class","total_table_table")
+
+	var total_table_rows = total_table.append("tbody").selectAll("tr")
+					.data(all_data).enter()
+					.append("tr")
+					.attr("class","table_row");
+
+
+	//total_table_rows.sort(function(a,b){return b[master_date]<a[master_date]});
+	//total_table_rows.sort(function(a,b){return b[master_date]<a[master_date]});
+	//total_table_rows.sort(function(a,b){return b[master_date]<a[master_date]});
+
+	var table_class_names = new Object;
+	table_class_names["Estado"] = "table_estado";
+	table_class_names[master_date] = "table_value";
+	total_table_rows.selectAll("td")
+		.data(function(d) {
+			return table_keys.map(function(k){return {'value':d[k],'name':k,'class':table_class_names[k]} });
+		}).enter()
+		.append("td")
+		.attr("data-th", function(d){return d.name})
+		.attr("class", function(d){return d.class})
+		.style("text-align","center")
+		.text(function(d){return d.value});
+
+	redraw_table();
+
+	d3.json("mx_tj.json", function(error, mx_tj) {
+	  if (error) throw error;
+
+	  svg.append("g")
+	      .attr("class", "municipalities")
+	    .selectAll("path")
+	      .data(topojson.feature(mx_tj, mx_tj.objects.states).features)
+	    .enter().append("path")
+	      .attr("d", path)
+	      .attr("id", function(d){return d.properties.state_name})
+				.attr("fill", function(d){return fillColor(d)})
+		.on("click", function(d){showData(d)})
+	    .append("title")
+	      .text(function(d) { return d.properties.state_name; });
+
+	  svg.append("path")
+	      .datum(topojson.mesh(mx_tj, mx_tj.objects.states, function(a, b) { return a.properties.state !== b.properties.state; }))
+	      .attr("class", "state-boundary")
+	      .attr("d", path);
+
+	  svg.append("path")
+	      .datum(topojson.mesh(mx_tj, mx_tj.objects.states, function(a, b) { return a.properties.state === b.properties.state && a !== b; }))
+	      .attr("class", "municipality-boundary")
+	      .attr("d", path);
+
+	  svg.append("path")
+	      .datum(topojson.mesh(mx_tj, mx_tj.objects.states, function(a, b) { return a === b; }))
+	      .attr("class", "country-boundary")
+	      .attr("d", path);
+
+		/*
+		svg.selectAll('.state-label')
+	      .data(topojson.feature(mx_tj, mx_tj.objects.states).features)
+	    .enter().append("text")
+				.each(function(d){
+					d3.select(this)
+						.attr("class","state-label")
+						.attr("state", function(d){return d.properties.state_name})
+						.attr("transform",function(d){return "translate("+path.centroid(d)+")";})
+						.style("text-anchor","middle")
+						.text(function(d){return d.properties.state_name;})
+		});
+		*/
+
+	})
+})
+
+  
+function zoomed() {
+  projection
+      .translate(zoom.translate())
+      .scale(zoom.scale());
+
+  svg.selectAll("path")
+      .attr("d", path);
+
+				/*
+  svg.selectAll(".state-label")[0].forEach( function(d){
+    var data = d3.select(d).data()[0];//this will give you the text location data
+		//console.log(data)
+    //console.log(d3.select(d))
+		//console.log(projection(path.centroid(data)))
+		d3.select(d).attr("transform", "translate("+projection(path.centroid(data))+")" )//pass the location data here to get the new translated value.
+
+  });
+*/
+		
+	//svg.selectAll(".state-label")
+	//		.each(function(d){
+
+				//var state_temp = d3.select(this).attr("state");
+				//var new_path = d3.select("#"+state_temp).attr("d");
+				/*
+							d3.select(this)
+					.attr("transform",function(d){return "translate("+path.centroid(d)+")";})
+					*/
+				//console.log(new_path);
+		//		})
+
+}
+
+function showData(d) {
+  var state_name = d.properties.state_name;
+  var state_code = d.properties.state_code;
+  var array_code = state_code - 1;
+
+  d3.select("#state_graph").remove();
+  d3.select("#info_state_d3").remove();
+  d3.select("#info_num_d3").remove();
+  d3.select("#info_conf_d3").remove();
+
+  var graph = d3.select("#graph")
+	.append("svg")
+	  .attr("id","state_graph")
+	  .attr("width",graph_width+margin.left+margin.right)
+	  .attr("height",graph_height + margin.top + margin.bottom)
+	.append("g")
+	  .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+
+
+
+  d3.csv("timeseries/positivos.csv",function(e){
+  	//e is array of states
+	var state_data = e[array_code];
+	var state_dates = Object.keys(state_data);
+	state_dates = state_dates.slice(1,state_dates.length);
+	
+	var parseTime = d3.timeParse("%Y.%m.%d");
+	
+	state_dates_array = [];
+	for (var i=0;i<state_dates.length;i++){
+	  state_dates_array.push(parseTime(state_dates[i]));
+	}
+
+	console.log(state_dates_array);
+
+	var graph_data = [];
+	for (var i=0;i<state_dates_array.length;i++){
+	  graph_data[i] = new Object;
+	  graph_data[i].date = state_dates_array[i];
+	  graph_data[i].value = parseInt(state_data[state_dates[i]]);
+	};
+	console.log(graph_data);
+
+
+
+
+	var x = d3.scaleTime()
+	.domain(d3.extent(graph_data,function(d){return d.date}))
+	  .range([0, graph_width])
+	
+	var y = d3.scaleLinear()
+	  .domain( [0, max_no])
+	  .range([ graph_height, 0 ]);
+
+	graph.append("g")			
+	      .attr("class", "grid")
+	      .call(make_y_gridlines()
+		  .tickSize(-graph_width)
+		  .tickFormat("")
+	      )
+	
+	function make_y_gridlines() {		
+	    return d3.axisLeft(y)
+		.ticks(5)
+	}
+
+	d3.select("#state_graph").select(".grid").selectAll("path").remove();
+
+	//draw x-axis
+	graph.append("g")
+          .attr("transform", "translate(0," + graph_height + ")")
+          .call(d3.axisBottom(x)
+	    .tickFormat(d3.timeFormat("%d-%m"))
+	    .ticks(d3.timeDay.every(1))
+	  )
+	  .selectAll("text")	
+            .style("text-anchor", "end")
+              .attr("transform", "rotate(-65)");
+
+	//x-axis label
+	graph.append("text")             
+	      .attr("transform",
+		    "translate(" + (graph_width/2) + " ," + 
+				   (graph_height + margin.top + 35) + ")")
+	      .attr("class","axis-label")
+	      .style("text-anchor", "middle")
+	      .text("Fecha");
+
+	//draw y-axis
+	graph.append("g")
+	  .call(d3.axisLeft(y));
+
+	//y-axis label  
+	graph.append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 0 - margin.left)
+	      .attr("x",0 - (graph_height / 2))
+	      .attr("dy", "1em")
+	      .attr("class","axis-label")
+	      .style("text-anchor", "middle")
+	      .text("no. confirmados");      
+
+
+	  
+	    graph.append("path")
+	      .datum(graph_data)
+	      .attr("fill", "none")
+	      .attr("stroke", "#69b3a2")
+	      .attr("stroke-width", 1.5)
+	      .attr("d", d3.line()
+		.x(function(d) { return x(d.date) })
+		.y(function(d) { return y(d.value) })
+        	)
+
+	graph.append("g")      
+	.selectAll("dot")
+	      .data(graph_data)
+	      .enter()
+	      .append("circle")
+		.attr("cx", function(d) { return x(d.date) } )
+		.attr("cy", function(d) { return y(d.value) } )
+		.attr("r", 5)
+		.attr("fill", "#69b3a2")
+
+  
+	  //insert text with state and no_confirmed
+	  d3.select("#info_state")
+	    .append("span")
+	      .attr("id","info_state_d3")
+	      .text(state_name)
+
+	  d3.select("#info_num")
+	    .append("span")
+	      .attr("id","info_num_d3")
+	      .text(state_data[master_date])
+
+	  d3.select("#info_conf")
+	    .append("span")
+	      .attr("id","info_conf_d3")
+	      .text(" confirmados")
+  })
+
+}
+
+
+function redraw_table() {
+	var orig_table = document.getElementsByClassName("table_row")
+
+	//transform html collection into array
+	orig_array = [];
+	for (var i=0;i<orig_table.length;i++){
+		orig_array.push(orig_table[i])
+	};
+	
+	var to_col_2 = orig_array.slice(10,21);
+	var to_col_3 = orig_array.slice(22,32);
+
+	d3.select("#col_2")
+					.append("table")
+					.attr("class","total_table_table")
+					.attr("id","total_table_col_2");
+	d3.select("#col_3")
+					.append("table")
+					.attr("class","total_table_table")
+					.attr("id","total_table_col_3");
+
+	var total_table_col_2 = document.getElementById("total_table_col_2");
+	var total_table_col_3 = document.getElementById("total_table_col_3");
+
+	for (var i=0;i<to_col_2.length;i++){
+		total_table_col_2.appendChild(to_col_2[i])
+	};
+
+	for (var i=0;i<to_col_3.length;i++){
+		total_table_col_3.appendChild(to_col_3[i])
+	};
+
+	
+
+}
+
+
+function fillColor(d) {
+  var state_name = d.properties.state_name;
+  var state_code = d.properties.state_code;
+  var array_code = state_code - 1;
+	
+
+  var data_point = all_data[array_code][master_date];	
+  return(colorScale(data_point));	
+}
+
+
+
+d3.select(self.frameElement).style("height", height + "px");
+
+</script>
