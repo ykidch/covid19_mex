@@ -21,7 +21,7 @@ get_timeseries <- function(modalidad){
 #QUERETARO sin acento
 
 	new_df <- data.frame(states,row.names=NULL)
-	cols_new_df <- c("Estados")
+	cols_new_df <- c("Estado")
 
 	for (file in list.files("data",pattern=paste(modalidad,".*.csv",sep=""),recursive=TRUE,full.names=TRUE)) {
 	
