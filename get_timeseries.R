@@ -46,5 +46,5 @@ get_timeseries <- function(modalidad){
 }
 
 get_timeseries("positivos")
-get_timeseries("sospechosos")
+#get_timeseries("sospechosos")
 
