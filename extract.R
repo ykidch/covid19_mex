@@ -192,4 +192,4 @@ create_for_day <- function(modalidad){
 }
 
 #create_for_day("sospechosos")
-create_for_day("positivos")
+#create_for_day("positivos")
