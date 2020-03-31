@@ -40,7 +40,20 @@ get_timeseries <- function(modalidad){
 
 	write.csv(new_df, file=paste("timeseries/",modalidad,".csv",sep=""),row.names=FALSE,quote=FALSE)
 
+	#hacer tabla de nuevos casos
+	nuevos <- data.frame(states,row.names=NULL)
+	for (i in 2:(length(new_df)-1)){
+		print(i)
+ 		nuevos[,i] <- new_df[,i+1]-new_df[,i];
+	}
+
+	colnames(nuevos) <- c(cols_new_df[1],cols_new_df[3:length(cols_new_df)])
+	write.csv(nuevos, file=paste("timeseries/","nuevos_",modalidad,".csv",sep=""),row.names=FALSE,quote=FALSE)
+
+
+
 	return(new_df)
+
 
 	}
 }
