@@ -29,9 +29,12 @@ get_data <- function(pdf) {
 
 	tablenames <- c("n_caso","Estado","Sexo","Edad","Inicio_sintomas","Status_prueba","Procedencia","Llegada_Mexico")
 
-	firstpage <- mexico_casos[[1]]
+	filter_page <- function(page) {
 
-	firstrow <- min(which(grepl("^1",firstpage[,1],perl=TRUE))) #no. 1ra fila
+	#firstpage <- mexico_casos[[1]]
+	firstpage <- page
+
+	firstrow <- min(which(grepl("^[0-9]",firstpage[,1],perl=TRUE))) #no. 1ra fila
 	firstfiltered <- firstpage[firstrow:dim(firstpage)[1],]
 
 	pop_vec <- c();
@@ -136,15 +139,23 @@ get_data <- function(pdf) {
 
 	confirmed_table <- firstfiltered;
 	print(confirmed_table);
-
-	for (i in 2:length(mexico_casos)) {
-	print(mexico_casos[[i]]);
-	confirmed_table <- rbind(confirmed_table,mexico_casos[[i]])
+	return(confirmed_table);
 	}
 
-	colnames(confirmed_table) <- tablenames
+	final_table <- filter_page(mexico_casos[[1]]);
 
-	return(as.data.frame(confirmed_table))
+
+	for (i in 2:length(mexico_casos)) {
+	#print(mexico_casos[[i]]);
+	#confirmed_table <- rbind(confirmed_table,mexico_casos[[i]])
+	final_table <- rbind(final_table,filter_page(mexico_casos[[i]]));
+	}
+
+	#colnames(confirmed_table) <- tablenames
+	colnames(final_table) <- tablenames;
+
+	#return(as.data.frame(confirmed_table))
+	return(as.data.frame(final_table))
 }
 
 
