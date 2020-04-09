@@ -27,7 +27,8 @@ get_data <- function(pdf) {
 
 	mexico_casos <- extract_tables(file = filename, method = "stream",output = "matrix")
 
-	tablenames <- c("n_caso","Estado","Sexo","Edad","Inicio_sintomas","Status_prueba","Procedencia","Llegada_Mexico")
+	#tablenames <- c("n_caso","Estado","Sexo","Edad","Inicio_sintomas","Status_prueba","Procedencia","Llegada_Mexico")
+	tablenames <- c("n_caso","Estado","Sexo","Edad","Inicio_sintomas","Status_prueba")
 
 	filter_page <- function(page) {
 
@@ -107,22 +108,22 @@ get_data <- function(pdf) {
 
 	}
 
-	print("filter 6");
-	if (any(grepl("\\s",firstfiltered[,6],perl=TRUE))){
-		firstfiltered_6split <- cbind(sub("^([a-z|A-Z]{10})\\s(.*)$","\\1",firstfiltered[,6]),sub("^([a-z|A-Z]{10})\\s(.*)$","\\2",firstfiltered[,6]));
-		if (dim(firstfiltered)[2] >= 7){
-			firstfiltered <- cbind(firstfiltered[,1:5],firstfiltered_6split,firstfiltered[,7:dim(firstfiltered)[2]])}
-		else {
-			firstfiltered <- cbind(firstfiltered[,1:5],firstfiltered_6split)
-		}
+#	print("filter 6");
+#	if (any(grepl("\\s",firstfiltered[,6],perl=TRUE))){
+#		firstfiltered_6split <- cbind(sub("^([a-z|A-Z]{10})\\s(.*)$","\\1",firstfiltered[,6]),sub("^([a-z|A-Z]{10})\\s(.*)$","\\2",firstfiltered[,6]));
+#		if (dim(firstfiltered)[2] >= 7){
+#			firstfiltered <- cbind(firstfiltered[,1:5],firstfiltered_6split,firstfiltered[,7:dim(firstfiltered)[2]])}
+#		else {
+#			firstfiltered <- cbind(firstfiltered[,1:5],firstfiltered_6split)
+#		}
+#
+#	}
 
-	}
-
-	print("filter 7");
-	if (any(grepl("\\s([0-9]{2}/[0-9]{2}/[0-9]{4}|NA)",firstfiltered[,7],perl=TRUE))){
-		firstfiltered_7split <- cbind(sub("^(.*)\\s([0-9]{2}/[0-9]{2}/[0-9]{4}|NA)$","\\1",firstfiltered[,7]),sub("^(.*)\\s([0-9]{2}/[0-9]{2}/[0-9]{4}|NA)$","\\2",firstfiltered[,7]));
-		firstfiltered <- cbind(firstfiltered[,1:6],firstfiltered_7split);
-	}
+#	print("filter 7");
+#	if (any(grepl("\\s([0-9]{2}/[0-9]{2}/[0-9]{4}|NA)",firstfiltered[,7],perl=TRUE))){
+#		firstfiltered_7split <- cbind(sub("^(.*)\\s([0-9]{2}/[0-9]{2}/[0-9]{4}|NA)$","\\1",firstfiltered[,7]),sub("^(.*)\\s([0-9]{2}/[0-9]{2}/[0-9]{4}|NA)$","\\2",firstfiltered[,7]));
+#		firstfiltered <- cbind(firstfiltered[,1:6],firstfiltered_7split);
+#	}
 
 
 #	rexp <- "^(\\w+)\\s?(.*)$"
